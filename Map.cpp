@@ -124,7 +124,7 @@ void Map::update()
 
 
 
-
+#if false
     if (Pad::isTrigger(PAD_INPUT_UP))
     {
         if (indexY > 0)
@@ -153,6 +153,24 @@ void Map::update()
             m_cursorNo++;
         }
     }
+#endif
+    if (Pad::isTrigger(PAD_INPUT_UP))
+    {
+        m_scrollY++;
+    }
+    if (Pad::isTrigger(PAD_INPUT_DOWN))
+    {
+        m_scrollY--;
+    }
+    if (Pad::isTrigger(PAD_INPUT_LEFT))
+    {
+        m_scrollX++;
+    }
+    if (Pad::isTrigger(PAD_INPUT_RIGHT))
+    {
+        m_scrollX--;
+    }
+
 }
 
 
@@ -181,10 +199,19 @@ void Map::draw()
                 m_handle, true, false);
         }
     }
-#else
-    //m_mapData
+#endif
+    //m_scrollX < 0  âEÇ…Ç∏ÇÍÇƒÇ¢ÇÈ
+    //m_scrollX > 0  ç∂Ç…Ç∏ÇÍÇƒÇ¢ÇÈ
+    //m_scrollY < 0  â∫Ç…Ç∏ÇÍÇƒÇ¢ÇÈ
+    //m_scrollY > 0  è„Ç…Ç∏ÇÍÇƒÇ¢ÇÈ
 
+    int indexX = 0;
+    int indexY = 0;
 
+    indexX = -(m_scrollX / kChipSize);
+    while (indexX < 0)indexX += kBgNumX;
+    indexY = -(m_scrollY / kChipSize);
+    while (indexY < 0)indexY += kBgNumY;
 
     for (int x = 0; x < kBgNumX; x++)
     {
@@ -195,12 +222,8 @@ void Map::draw()
             assert(chipNo >= 0);
             assert(chipNo < chipNum());
 
-
-
             int graphX = chipNo % chipNumX() * kChipSize;
             int graphY = chipNo / chipNumX() * kChipSize;
-
-
 
             DrawRectGraph(x * kChipSize, y * kChipSize,
                 graphX, graphY, kChipSize, kChipSize,
@@ -208,9 +231,6 @@ void Map::draw()
         }
     }
 
-
-
-#endif
     drawCursor();
 }
 
