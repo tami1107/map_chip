@@ -23,6 +23,8 @@ public:
     void draw();
 
 private:
+    // マップの描画
+    void drawMap(int offsetX, int offsetY);
     //マップチップ編集用カーソル
     void drawCursor();
 
@@ -36,6 +38,7 @@ private:
     void readData();    // マップのデータを読み込む
 
 private:
+   
     //グラフィックデータのハンドル
     int m_handle;
 
